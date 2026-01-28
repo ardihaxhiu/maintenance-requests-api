@@ -26,6 +26,7 @@ class StoreMaintenanceRequest extends FormRequest
     {
         return [
             'description' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => [
                 'required',
                 'string',

@@ -12,6 +12,10 @@ class MaintenanceActivity extends Model
         'metadata',
     ];
 
+    protected $casts = [
+        'metadata' => 'array',
+    ];
+
     public function maintenanceRequest(): BelongsTo
     {
         return $this->belongsTo(MaintenanceRequest::class, 'maintenance_request_id');

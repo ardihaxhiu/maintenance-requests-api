@@ -10,6 +10,7 @@ class MaintenanceRequest extends Model
         'user_id',
         'technician_id',
         'description',
+        'image',
         'status',
         'priority',
     ];

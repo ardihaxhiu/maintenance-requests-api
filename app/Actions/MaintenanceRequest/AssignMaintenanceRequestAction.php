@@ -1,15 +1,23 @@
-<?php 
+<?php
 
 namespace App\Actions\MaintenanceRequest;
 
-use App\Models\MaintenanceRequest;
+use App\Events\MaintenanceRequest\MaintenanceRequestAssigned;
 use App\Http\Resources\MaintenanceRequestResource;
+use App\Models\MaintenanceRequest;
+use Illuminate\Support\Facades\DB;
 
 class AssignMaintenanceRequestAction
 {
     public function handle(MaintenanceRequest $maintenanceRequest, array $data): MaintenanceRequestResource
     {
-        $maintenanceRequest->update(['technician_id' => $data['technician_id']]);
-        return new MaintenanceRequestResource($maintenanceRequest->load('technician'));
+        return DB::transaction(function () use ($maintenanceRequest, $data) {
+            $technicianId = (int) $data['technician_id'];
+            $maintenanceRequest->update(['technician_id' => $technicianId]);
+
+            MaintenanceRequestAssigned::dispatch($maintenanceRequest->fresh(), $technicianId);
+
+            return new MaintenanceRequestResource($maintenanceRequest->load('technician'));
+        });
     }
 }

@@ -17,6 +17,7 @@ class MaintenanceRequestResource extends JsonResource
         return [
             'id' => $this->id,
             'description' => $this->description,
+            'image' => $this->image ? asset('storage/' . $this->image) : null,
             'status' => $this->status,
             'priority' => $this->priority,
             'created_at' => $this->created_at,

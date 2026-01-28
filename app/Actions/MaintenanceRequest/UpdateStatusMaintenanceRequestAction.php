@@ -2,20 +2,29 @@
 
 namespace App\Actions\MaintenanceRequest;
 
-use App\Models\MaintenanceRequest;
 use App\Enums\Maintenance\MaintenanceRequestStatus;
-use Illuminate\Validation\ValidationException;
+use App\Events\MaintenanceRequest\MaintenanceRequestStatusChanged;
 use App\Http\Resources\MaintenanceRequestResource;
+use App\Models\MaintenanceRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class UpdateStatusMaintenanceRequestAction
 {
     public function handle(MaintenanceRequest $maintenanceRequest, array $data): MaintenanceRequestResource
     {
-        $this->validateTransition($maintenanceRequest->status, $data['status']);
-        
-        $maintenanceRequest->update(['status' => $data['status']]);
-        
-        return new MaintenanceRequestResource($maintenanceRequest);
+        $fromStatus = $maintenanceRequest->status;
+        $toStatus = $data['status'];
+
+        $this->validateTransition($fromStatus, $toStatus);
+
+        return DB::transaction(function () use ($maintenanceRequest, $fromStatus, $toStatus) {
+            $maintenanceRequest->update(['status' => $toStatus]);
+
+            MaintenanceRequestStatusChanged::dispatch($maintenanceRequest->fresh(), $fromStatus, $toStatus);
+
+            return new MaintenanceRequestResource($maintenanceRequest);
+        });
     }
 
     private function validateTransition(string $from, string $to): void

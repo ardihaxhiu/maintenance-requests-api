@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('open');
             $table->string('priority')->default('low');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

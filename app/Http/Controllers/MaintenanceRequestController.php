@@ -28,7 +28,7 @@ class MaintenanceRequestController extends Controller
         return response()->json($maintenanceRequest);
     }
 
-    public function update(MaintenanceRequest $maintenanceRequest,UpdateMaintenanceRequest $request, UpdateMaintenanceRequestAction $action)
+    public function update(MaintenanceRequest $maintenanceRequest, UpdateMaintenanceRequest $request, UpdateMaintenanceRequestAction $action)
     {
         $maintenanceRequest = $action->handle($maintenanceRequest, $request->validated());
         return response()->json($maintenanceRequest);
