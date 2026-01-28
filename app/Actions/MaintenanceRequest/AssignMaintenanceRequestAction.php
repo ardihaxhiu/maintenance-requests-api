@@ -13,7 +13,10 @@ class AssignMaintenanceRequestAction
     {
         return DB::transaction(function () use ($maintenanceRequest, $data) {
             $technicianId = (int) $data['technician_id'];
-            $maintenanceRequest->update(['technician_id' => $technicianId]);
+            $maintenanceRequest->update([
+                'technician_id' => $technicianId,
+                'status' => 'assigned',
+            ]);
 
             MaintenanceRequestAssigned::dispatch($maintenanceRequest->fresh(), $technicianId);
 

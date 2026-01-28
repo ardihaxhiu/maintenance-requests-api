@@ -25,13 +25,12 @@ class MaintenanceRequestController extends Controller
     {
         $maintenanceRequest = $action->handle($request->validated());
 
-        return response()->json($maintenanceRequest);
+        return $maintenanceRequest->response();
     }
 
     public function update(MaintenanceRequest $maintenanceRequest, UpdateMaintenanceRequest $request, UpdateMaintenanceRequestAction $action)
     {
-        $maintenanceRequest = $action->handle($maintenanceRequest, $request->validated());
-        return response()->json($maintenanceRequest);
+        return $action->handle($maintenanceRequest, $request->validated());
     }
 
     public function destroy(MaintenanceRequest $maintenanceRequest)
@@ -42,21 +41,18 @@ class MaintenanceRequestController extends Controller
 
     public function show(MaintenanceRequest $maintenanceRequest, GetMaintenanceRequestAction $action)
     {
-        return response()->json($action->handle($maintenanceRequest));
+        return $action->handle($maintenanceRequest);
     }
 
     public function assign(MaintenanceRequest $maintenanceRequest, AssignMaintenanceRequest $request, AssignMaintenanceRequestAction $action)
     {
-        $maintenanceRequest = $action->handle($maintenanceRequest, $request->validated());
-        return response()->json($maintenanceRequest);
+        return $action->handle($maintenanceRequest, $request->validated());
     }
 
     public function status(MaintenanceRequest $maintenanceRequest, UpdateStatusMaintenanceRequest $request, UpdateStatusMaintenanceRequestAction $action)
     {
         $this->authorize('updateStatus', $maintenanceRequest);
 
-        $maintenanceRequest = $action->handle($maintenanceRequest, $request->validated());
-        
-        return response()->json($maintenanceRequest);
+        return $action->handle($maintenanceRequest, $request->validated());
     }
 }

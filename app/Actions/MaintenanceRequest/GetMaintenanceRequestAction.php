@@ -9,6 +9,6 @@ class GetMaintenanceRequestAction
 {
     public function handle(MaintenanceRequest $maintenanceRequest): MaintenanceRequestResource
     {
-        return new MaintenanceRequestResource($maintenanceRequest);
+        return new MaintenanceRequestResource($maintenanceRequest->load(['user', 'technician']));
     }
 }

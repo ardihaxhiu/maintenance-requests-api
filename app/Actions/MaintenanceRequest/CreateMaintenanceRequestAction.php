@@ -16,8 +16,8 @@ class CreateMaintenanceRequestAction
         $imagePath = null;
 
         try {
-            return DB::transaction(function () use ($data) {
-                if ($data['image']) {
+            return DB::transaction(function () use ($data, &$imagePath) {
+                if (isset($data['image']) && $data['image']) {
                     $imagePath = $data['image']->store('maintenance-requests', 'public');
                     $data['image'] = $imagePath;
                 }
