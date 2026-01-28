@@ -81,3 +81,9 @@ This project uses an **Action-based architecture**:
 MaintenanceRequestStatus: pending, in_progress, completed, cancelled
 MaintenanceRequestPriority: low, medium, high, urgent
 ```
+
+#### 7. **Testing with Pest PHP**
+- **Feature Tests**: API endpoint testing with authentication flows
+- **Unit Tests**: Isolated action class testing
+- Uses Laravel's `RefreshDatabase` trait for clean test state
+
